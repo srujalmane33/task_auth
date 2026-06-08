@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+dotenv.config();
+
+import cors from "cors";
 import express from 'express';
 import mongoose from 'mongoose';
 import UserModel from './models/User.js';
@@ -8,9 +12,19 @@ import router from './routes/auth.route.js';
 const app = express();
 app.use(express.json());
 
+
+app.use(cors());
+app.use(express.json());
+
 app.get('/', (req, res) => {
     res.send("working on this server tessting");
 });
+// console.log("ENV:", process.env.JWT_SECERT);
+// console.log(process.env.JWT_SECRET)
+
+
+// const result = dotenv.config();
+// console.log(result);
 
 // app.post('/register', async (req, res) => {
 //     const { name, email, password } = req.body;
@@ -39,7 +53,8 @@ app.get('/', (req, res) => {
 
 // })
 
-app.use("/api/auth", router)
+app.use("/api/auth", router);
+
 
 app.listen(3000);
 

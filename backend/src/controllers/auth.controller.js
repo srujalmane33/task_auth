@@ -1,11 +1,11 @@
 import express from "express";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import jsonwebtoken from "jsonwebtoken";
 import UserModel from "../models/User.js";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRT = " dfdfadfdsfasdfa";
+const JWT_SECRET = process.env.JWT_SECRET;
+// console.log(JWT_SECRET)
 
 export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -33,6 +33,7 @@ export const registerUser = async (req, res) => {
     });
   }
 };
+console.log(process.env.JWT_SECRET);
 
 export const loginUser = async (req, res) => {
   try {
@@ -45,19 +46,24 @@ export const loginUser = async (req, res) => {
       });
     }
 
-    const isMatch = bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({
         message: "password is wrong",
       });
     }
 
+    console.log("JWT_SECRET =", process.env.JWT_SECRET);
+
     const token = jwt.sign(
       {
-        // id: user._id,
+        id: user._id,
         email: user.email,
       },
-      JWT_SECRT,
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      },
     );
     res.status(200).json({
       message: "login successfull",
@@ -69,3 +75,11 @@ export const loginUser = async (req, res) => {
     });
   }
 };
+
+
+// export const logoutUser = (req, res) => {
+//   res.status(200).json({
+//     success: true,
+//     message: "Logged out successfully",
+//   });
+// };
