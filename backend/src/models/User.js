@@ -7,8 +7,12 @@ console.log("Connected to MongoDB", connectionUrl.connection.host);
 const userSchema = new mongoose.Schema({
   name: String,
   email: String,
-  password: String,
-});
+    password: String,
+    googleId: {
+      type:String,
+  }
+})
+
 
 const UserModel = mongoose.model("Users", userSchema);
 
