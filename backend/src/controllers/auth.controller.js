@@ -26,7 +26,22 @@ export const registerUser = async (req, res) => {
       password: hashedPassword,
     });
     await User.save();
-    res.status(201).send("User registered successfully");
+
+    const token = jwt.sign(
+      {
+        id: User._id,
+        email: User.email,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      },
+    );
+
+    res.status(201).json({
+      message: "User registered successfully",
+      token,
+    });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -38,13 +53,30 @@ console.log(process.env.JWT_SECRET);
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(req.body);
 
+    // const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email and password are required",
+      });
+    }
     const user = await UserModel.findOne({ email });
     if (!user) {
       return res.status(400).json({
         message: "user not found",
       });
     }
+    if (!user.password) {
+      return res.status(400).json({
+        message:
+          "This account was created using Google. Please sign in with Google.",
+      });
+    }
+
+    console.log(user);
+    console.log(user?.password);
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -75,7 +107,6 @@ export const loginUser = async (req, res) => {
     });
   }
 };
-
 
 // export const logoutUser = (req, res) => {
 //   res.status(200).json({

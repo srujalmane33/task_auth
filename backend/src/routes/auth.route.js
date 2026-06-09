@@ -8,12 +8,12 @@ const router = express.Router();
 router.post('/register', registerUser);
 router.post('/login', loginUser)
 
-router.get("/profile", authMiddleware, (req, res) => {
-    res.json(req.user);
-    res.json({
-        message : " profile page loaded"
-    })
-});
+// router.get("/profile", authMiddleware, (req, res) => {
+//     res.json(req.user);
+//     res.json({
+//         message : " profile page loaded"
+//     })
+// });
 router.post("/google", googleLogin);
 
 export default router;

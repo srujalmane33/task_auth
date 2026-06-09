@@ -16,9 +16,14 @@ app.use(express.json());
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send("working on this server tessting");
-});
+app.use("/api/auth", router);
+
+
+app.listen(3000);
+
+// app.get('/', (req, res) => {
+//     res.send("working on this server tessting");
+// });
 // console.log("ENV:", process.env.JWT_SECERT);
 // console.log(process.env.JWT_SECRET)
 
@@ -53,10 +58,7 @@ app.get('/', (req, res) => {
 
 // })
 
-app.use("/api/auth", router);
 
-
-app.listen(3000);
 
 
 //  catch (error) {

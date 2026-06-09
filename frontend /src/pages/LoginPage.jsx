@@ -91,6 +91,7 @@ import { loginUser } from "../services/authSerices.js";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
@@ -170,6 +171,15 @@ function Login() {
           >
             Login
           </button>
+        <p className="text-center text-gray-600">
+  Don't have an account?{" "}
+  <Link
+    to="/signup"
+    className="text-blue-600 font-medium hover:underline"
+  >
+    Sign Up
+  </Link>
+</p>
 
           <div className="flex justify-center pt-2">
             <GoogleLogin
@@ -177,6 +187,8 @@ function Login() {
               onError={() => console.log("Login Failed")}
             />
           </div>
+         
+          
         </form>
       </div>
     </div>
